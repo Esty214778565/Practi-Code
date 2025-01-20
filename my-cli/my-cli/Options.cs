@@ -16,9 +16,5 @@ namespace my_cli
         public bool SortByABOrder { get; set; } = false;
         public bool SortByExtension { get; set; } = false;
         public string Author { get; set; } = string.Empty;
-        public override string ToString()
-        {
-            return this.Output+" "+ Languages.ToString()+this.Note+this.Languages+this.Author+this.SortByABOrder;
-        }
     }
 }

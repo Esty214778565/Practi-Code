@@ -23,7 +23,7 @@ static void RemoveEmptyLines(string path)
 
     File.WriteAllLines(path, nonEmptyLines);
 
-}//remove e mpty lines
+}
 static void AddFileToBundle(string currentPath, string bundlePath)
 {
     File.AppendAllText(bundlePath, File.ReadAllText(currentPath));
@@ -49,7 +49,6 @@ static void SortFilesByExtension(List<string> files)
 
 static void GetInsideDirectory(string folderPath, List<string> files, List<string> languages)
 {
-    
     try
     {
         string[] myFiles = Directory.GetFiles(folderPath);
@@ -102,8 +101,7 @@ static void PassAllFiles(string folderPath, string bundlePath, Options options)
     List<string> files = new List<string>();
     GetInsideDirectory(folderPath, files, options.Languages);
 
-
-    if (options.Author != "")//check author in case
+    if (options.Author != "")
     {
         options.Author += "\n";
         AuthorOrNote(options.Author, bundlePath);
@@ -112,7 +110,7 @@ static void PassAllFiles(string folderPath, string bundlePath, Options options)
     { SortFilesByExtension(files); }
     else if (options.SortByABOrder)
     { files = SortByName(files); }
-    
+
 
     foreach (string file in files)
     {
@@ -225,7 +223,7 @@ rspCommand.SetHandler(() =>
         Console.WriteLine();
         if (response == 'y')
         {
-            
+
             request += " -s sort-by-ab-order ";
         }
         else
@@ -235,7 +233,7 @@ rspCommand.SetHandler(() =>
             Console.WriteLine();
             if (response == 'y')
             {
-                
+
                 request += "-s sort-by-extension";
             }
         }
@@ -254,7 +252,7 @@ rspCommand.SetHandler(() =>
 
 
 
-    
+
 });
 
 bundleOptionAuthor.AddAlias("-a");
@@ -312,8 +310,8 @@ bundleCommand.SetHandler((output, rel, note, author, languages, sort) =>
     }
     else
     {
-        if(IsValidPath(output))
-        options.Output = output;
+        if (IsValidPath(output))
+            options.Output = output;
         else
         {
             Console.WriteLine("Path is not valid");
@@ -322,14 +320,7 @@ bundleCommand.SetHandler((output, rel, note, author, languages, sort) =>
     }
     if (note)
     {
-        //string currentDirectory = Directory.GetCurrentDirectory();
-        //string projectName = Path.GetFileName(currentDirectory);
-
-        //options.Note = currentDirectory + projectName;
         options.Note = true;
-        
-        
-        
     }
     if (rel)
     {
@@ -343,8 +334,6 @@ bundleCommand.SetHandler((output, rel, note, author, languages, sort) =>
     {
         foreach (var language in languages)
         {
-            
-
             if (fileExtensions.ContainsKey(language))
             {
                 options.Languages.Add(fileExtensions.GetValueOrDefault(language));
@@ -367,24 +356,20 @@ bundleCommand.SetHandler((output, rel, note, author, languages, sort) =>
     }
     if (!string.IsNullOrEmpty(sort))
     {
-        if(sort== "sort-by-extension")
+        if (sort == "sort-by-extension")
         {
             options.SortByExtension = true;
         }
         else
         {
-            if(sort== "Sort-by-ab-order")
+            if (sort == "Sort-by-ab-order")
             {
                 options.SortByABOrder = true;
             }
         }
-        
+
     }
-    
 
-
-
-    
     File.Create(output).Close();
     PassAllFiles(Environment.CurrentDirectory, output, options);
 
